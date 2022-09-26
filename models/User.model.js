@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-/* CAMPOS 
-- name: String
-- email: String
-- favorites: [ObjectsId]
-- dislikes: [ObjectsId]
-*/
-
-const clientSchema = new Schema({
-  // TODO: write the schema
-});
+const clientSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    },
+    favorites: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+    dislikes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+    role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
+    passwordHash: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
 const ClientModel = mongoose.model("Client", clientSchema);
 
