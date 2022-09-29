@@ -10,6 +10,11 @@ const isAdmin = require("../middlewares/isAdmin");
 router.post("/create", isAuth, attCurrentUser, isAdmin, async (req, res) => {
   try {
     const newRecipe = await RecipeModel.create({ ...req.body });
+
+    const allUsers = await UserModel.findAll(email);
+
+    console.log(allUsers);
+
     return res.status(201).json(newRecipe);
   } catch (error) {
     console.log(error);

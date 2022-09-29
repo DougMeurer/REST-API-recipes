@@ -9,8 +9,10 @@ async function attCurrentUser(req, res, next) {
       { passwordHash: 0 }
     );
 
-    if (!user) {
-      return res.status(400).json({ message: "Error, user not found!" });
+    if (!user.emailConfirmed) {
+      return res
+        .status(400)
+        .json({ message: "Error, user account not activated!" });
     }
 
     req.currentUser = user;
